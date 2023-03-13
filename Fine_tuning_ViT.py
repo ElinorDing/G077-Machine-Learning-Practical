@@ -133,14 +133,14 @@ def main():
     label2id = {label:id for id,label in id2label.items()}
 
 
-    if args.model_name_or_path:
-        processor = ViTImageProcessor.from_pretrained(args.model_name_or_path)
-    else:
-        raise ValueError("Make sure the model name is provided")
-        # logger.info("Training new model from scratch")
-        # model = ViTImageProcessor.from_config(config)
+#     if args.model_name_or_path:
+#         processor = ViTImageProcessor.from_pretrained(args.model_name_or_path)
+#     else:
+#         raise ValueError("Make sure the model name is provided")
+#         # logger.info("Training new model from scratch")
+#         # model = ViTImageProcessor.from_config(config)
 
-    # processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
+    processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
 
     image_mean, image_std = processor.image_mean, processor.image_std
     size = processor.size["height"]
@@ -182,36 +182,31 @@ def main():
         labels = torch.tensor([example["label"] for example in examples])
         return {"pixel_values": pixel_values, "labels": labels}
 
-    train_dataloader = DataLoader(train_ds, collate_fn=collate_fn, batch_size=args.per_device_train_batch_size)
-
-    batch = next(iter(train_dataloader))
-    for k,v in batch.items():
-        if isinstance(v, torch.Tensor):
-            print(k, v.shape)
+    train_dataloader = DataLoader(train_ds, collate_fn=collate_fn, batch_size=args.per_device_train_batch_size
 
 
-    model = ViTForImageClassification.from_pretrained(args.model_name_or_path,id2label=id2label,label2id=label2id)
-    # model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224-in21k',
-    #                                                 id2label=id2label,
-    #                                                 label2id=label2id)
+#     model = ViTForImageClassification.from_pretrained(args.model_name_or_path,id2label=id2label,label2id=label2id)
+    model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224-in21k',
+                                                    id2label=id2label,
+                                                    label2id=label2id)
 
-    # metric_name = "accuracy"
+    metric_name = "accuracy"
 
-    # args = TrainingArguments(
-    #     f"test-brain_tumor_classification",
-    #     save_strategy="epoch",
-    #     evaluation_strategy="epoch",
-    #     learning_rate=2e-5,
-    #     per_device_train_batch_size=10,
-    #     per_device_eval_batch_size=4,
-    #     # training epoch, could be changed later 
-    #     num_train_epochs=10,
-    #     weight_decay=0.01,
-    #     load_best_model_at_end=True,
-    #     metric_for_best_model=metric_name,
-    #     logging_dir='logs',
-    #     remove_unused_columns=False,
-    # )
+    args = TrainingArguments(
+        f"test-brain_tumor_classification",
+        save_strategy="epoch",
+        evaluation_strategy="epoch",
+        learning_rate=2e-5,
+        per_device_train_batch_size=10,
+        per_device_eval_batch_size=4,
+        # training epoch, could be changed later 
+        num_train_epochs=10,
+        weight_decay=0.01,
+        load_best_model_at_end=True,
+        metric_for_best_model=metric_name,
+        logging_dir='logs',
+        remove_unused_columns=False,
+    )
 
     def compute_metrics(eval_pred):
         predictions, labels = eval_pred
@@ -227,20 +222,40 @@ def main():
         compute_metrics=compute_metrics,
         tokenizer=processor,
     )
-    for epoch in trange(args.num_train_epochs, desc="train_epochs"):
-        trainer.train()
-        outputs = trainer.predict(test_ds)
-        print(outputs.metrics)
+                                  
+    %load_ext tensorboard
+    %tensorboard --logdir logs/
+                                  
+#   training                               
+    trainer.train()
+                                  
+    outputs = trainer.predict(test_ds)
+    print(outputs.metrics)
+    y_true = outputs.label_ids
+    y_pred = outputs.predictions.argmax(1)
 
-        y_true = outputs.label_ids
-        y_pred = outputs.predictions.argmax(1)
+    labels = train_ds.features['label'].names
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+    disp.plot(xticks_rotation=45)
+                                  
+#  save model 
+    trainer.save_model(args.output_dir)
+                                  
+#     for epoch in trange(args.num_train_epochs, desc="train_epochs"):
+#         trainer.train()
+#         outputs = trainer.predict(test_ds)
+#         print(outputs.metrics)
 
-        labels = train_ds.features['label'].names
-        cm = confusion_matrix(y_true, y_pred)
-        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-        disp.plot(xticks_rotation=45)
+#         y_true = outputs.label_ids
+#         y_pred = outputs.predictions.argmax(1)
 
-        trainer.save_model(args.output_dir)
+#         labels = train_ds.features['label'].names
+#         cm = confusion_matrix(y_true, y_pred)
+#         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+#         disp.plot(xticks_rotation=45)
+
+#         trainer.save_model(args.output_dir)
 
 
 if __name__ == "__main__":
