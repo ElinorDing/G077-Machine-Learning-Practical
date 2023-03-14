@@ -3,7 +3,6 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import cv2
 from tqdm import trange
 from datasets import load_dataset
 from transformers import ViTImageProcessor
