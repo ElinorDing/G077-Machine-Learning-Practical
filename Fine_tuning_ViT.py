@@ -53,9 +53,8 @@ def parse_args():
     parser.add_argument(
         "--metric_for_best_model",
         type=str,
-        default=None
-        help= "Use in conjunction with `load_best_model_at_end` to specify the metric to use to compare two different
-            models."
+        default=None,
+        help= "Use in conjunction with `load_best_model_at_end` to specify the metric to use to compare two different models.",
     )
     parser.add_argument(
         "--load_best_model_at_end",
