@@ -229,7 +229,7 @@ def main():
     trainer.train()
                                   
     outputs = trainer.predict(test_ds)
-    print(outputs.metrics)
+    print('ZHEXHE: ',outputs.metrics)
     y_true = outputs.label_ids
     y_pred = outputs.predictions.argmax(1)
 
