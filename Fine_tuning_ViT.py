@@ -222,8 +222,8 @@ def main():
         tokenizer=processor,
     )
                                   
-    %load_ext tensorboard
-    %tensorboard --logdir logs/
+    # %load_ext tensorboard
+    # %tensorboard --logdir logs/
                                   
 #   training                               
     trainer.train()
