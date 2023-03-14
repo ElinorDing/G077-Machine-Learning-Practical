@@ -199,7 +199,7 @@ def main():
         per_device_train_batch_size=10,
         per_device_eval_batch_size=4,
         # training epoch, could be changed later 
-        num_train_epochs=10,
+        num_train_epochs=1,
         weight_decay=0.01,
         load_best_model_at_end=True,
         metric_for_best_model=metric_name,
@@ -227,12 +227,12 @@ def main():
                                   
 #   training                               
     trainer.train()
-                                  
+    print('1111')             
     outputs = trainer.predict(test_ds)
     print('ZHEXHE: ',outputs.metrics)
     y_true = outputs.label_ids
     y_pred = outputs.predictions.argmax(1)
-
+    print('2222')
     labels = train_ds.features['label'].names
     cm = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
