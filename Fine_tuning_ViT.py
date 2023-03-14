@@ -181,7 +181,7 @@ def main():
         labels = torch.tensor([example["label"] for example in examples])
         return {"pixel_values": pixel_values, "labels": labels}
 
-    train_dataloader = DataLoader(train_ds, collate_fn=collate_fn, batch_size=args.per_device_train_batch_size
+    train_dataloader = DataLoader(train_ds, collate_fn=collate_fn, batch_size=args.per_device_train_batch_size)
 
 
 #     model = ViTForImageClassification.from_pretrained(args.model_name_or_path,id2label=id2label,label2id=label2id)
