@@ -33,6 +33,12 @@ train_datagen = ImageDataGenerator(rescale=1./255,
 
 test_datagen = ImageDataGenerator(rescale=1./255)
 
+
+test_generator = test_datagen.flow_from_directory(test_dir,
+                                                  target_size=(512, 512),
+                                                  batch_size=32,
+                                                  class_mode='categorical')
+
 train_generator = train_datagen.flow_from_directory(train_dir,
                                                     target_size=(512, 512),
                                                     batch_size=32,
@@ -63,13 +69,19 @@ model = Model(inputs=base_model.input, outputs=x)
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
-model.fit(train_generator, epochs=10, validation_data=validation_generator)
+model.fit(train_generator,
+          epochs=10,
+          validation_data=validation_generator)
 
-# Evaluate the model
-test_generator = test_datagen.flow_from_directory('/content/gdrive/MyDrive/G077/tumor/Data_to_use/vgg/test',
-                                                  target_size=(512, 512),
-                                                  batch_size=32,
-                                                  class_mode='categorical')
+# Evaluate the model on the training set
+train_loss, train_acc = model.evaluate(train_generator)
+print('Training accuracy:', train_acc)
+
+# Evaluate the model on the validation set
+val_loss, val_acc = model.evaluate(validation_generator)
+print('Validation accuracy:', val_acc)
+
+# Evaluate the model on the test set
 test_loss, test_acc = model.evaluate(test_generator)
 print('Test accuracy:', test_acc)
 
