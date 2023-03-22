@@ -40,7 +40,7 @@ test_dir = "//G077-Machine-Leaning-Practical/Data/Clean_data/test"
 batch_size =32
 test_generator = test_datagen.flow_from_directory(test_dir, target_size=(512, 512), batch_size=batch_size, class_mode='categorical', shuffle=False)
 
-history = model.fit(train_generator, epochs=100, validation_data=valid_generator)
+history = model.fit(train_generator, epochs=10, validation_data=valid_generator)
 
 train_acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
