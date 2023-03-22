@@ -83,3 +83,7 @@ def main():
     test_loss, test_accuracy = model.evaluate(test_generator)
     print(f'Test accuracy: {test_accuracy * 100:.2f}%')
     print(f'Test loss: {test_loss * 100:.2f}%')
+
+
+if __name__ == "__main__":
+    main()
