@@ -7,8 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/1SLOMCDXfXiqjMvtZNsB1gKRHejsk2M_5
 """
 
-from google.colab import drive
-drive.mount('/content/gdrive')
+# from google.colab import drive
+# drive.mount('/content/gdrive')
 
 import os
 import shutil
@@ -20,10 +20,10 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.vgg16 import VGG16
 
 # Define the paths to your original data and the output directories for train, validation and test sets
-original_data_dir = '/content/gdrive/MyDrive/G077/tumor/Data_to_use'
-train_dir = '/content/gdrive/MyDrive/G077/tumor/Data_to_use/vgg/train'
-val_dir = '/content/gdrive/MyDrive/G077/tumor/Data_to_use/vgg/validation'
-test_dir = '/content/gdrive/MyDrive/G077/tumor/Data_to_use/vgg/test'
+original_data_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data'
+train_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train'
+val_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/validation'
+test_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/test'
 
 # Define the data generators
 train_datagen = ImageDataGenerator(rescale=1./255,
