@@ -32,8 +32,8 @@ valid_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
 # change data directory 
 
-train_generator = train_datagen.flow_from_directory("/G077-Machine-Learning-Practical/Data/Clean_data/train", target_size=(512, 512), batch_size=32, class_mode='categorical')
-valid_generator = valid_datagen.flow_from_directory("/G077-Machine-Learning-Practical/Data/Clean_data/validation", target_size=(512, 512), batch_size=32, class_mode='categorical')
+train_generator = train_datagen.flow_from_directory("~/G077-Machine-Learning-Practical/Data/Clean_data/train/", target_size=(512, 512), batch_size=32, class_mode='categorical')
+valid_generator = valid_datagen.flow_from_directory("~/G077-Machine-Learning-Practical/Data/Clean_data/validation/", target_size=(512, 512), batch_size=32, class_mode='categorical')
 
 test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 test_dir = "//G077-Machine-Leaning-Practical/Data/Clean_data/test"
