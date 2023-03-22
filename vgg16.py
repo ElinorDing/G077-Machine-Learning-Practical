@@ -20,10 +20,10 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.vgg16 import VGG16
 
 # Define the paths to your original data and the output directories for train, validation and test sets
-original_data_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data'
-train_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train'
-val_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/validation'
-test_dir = '/G077-Machine-Leaning-Practical/Data/Clean_data/test'
+original_data_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data'
+train_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train/'
+val_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/validation/'
+test_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/test/'
 
 # Define the data generators
 train_datagen = ImageDataGenerator(rescale=1./255,
