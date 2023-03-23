@@ -117,3 +117,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# python3 vgg16.py --train_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/train/ --val_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/validation/ --test_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/test/
