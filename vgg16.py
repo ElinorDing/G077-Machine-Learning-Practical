@@ -22,10 +22,10 @@ from tensorflow.keras.applications.vgg16 import VGG16
 from sklearn.metrics import f1_score
 
 # Define the paths to your original data and the output directories for train, validation and test sets
-original_data_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data'
-train_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train/'
-val_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/validation/'
-test_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/test/'
+
+# train_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train/'
+# val_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/validation/'
+# test_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/test/'
 def parse_args():
     parser = argparse.ArgumentParser(description="Finetune a transformers model on a summarization task")
     parser.add_argument(
@@ -102,9 +102,6 @@ def main():
 
     # Evaluate the model on the training set
     train_loss, train_acc, test_precision, test_recall = model.evaluate(train_generator)
-    y_true = test_generator.classes
-    y_pred = model.predict(test_generator).argmax(axis=-1)
-    f1score = f1_score(y_true, y_pred, average='weighted')
 
     print('Training accuracy:', train_acc)
     print('Training loss:', train_loss)
@@ -115,6 +112,9 @@ def main():
 
     # Evaluate the model on the test set
     test_loss, test_acc = model.evaluate(test_generator)
+    y_true = test_generator.classes
+    y_pred = model.predict(test_generator).argmax(axis=-1)
+    f1score = f1_score(y_true, y_pred, average='weighted')
     print('Test accuracy:', test_acc)
     print(f'Test precision: {test_precision:.2f}')
     print(f'Test recall: {test_recall:.2f}')
