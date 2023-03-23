@@ -13,6 +13,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 import matplotlib.pyplot as plt
+from sklearn.metrics import f1_score
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Finetune a transformers model on a summarization task")
@@ -45,6 +46,7 @@ def parse_args():
     return args
 
 
+
 def main():
     args = parse_args()
     base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(512, 512, 3))
@@ -57,7 +59,7 @@ def main():
     for layer in base_model.layers:
         layer.trainable = False
 
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
 
 
     train_datagen = ImageDataGenerator(preprocessing_function=preprocess_input, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
@@ -80,9 +82,16 @@ def main():
     print(f'Train accuracy: {train_acc * 100:.2f}%')
     print(f'Validation accuracy: {val_acc * 100:.2f}%')
 
-    test_loss, test_accuracy = model.evaluate(test_generator)
+    test_loss, test_accuracy, test_precision, test_recall = model.evaluate(test_generator)
+    y_true = test_generator.classes
+    y_pred = model.predict(test_generator).argmax(axis=-1)
+    f1score = f1_score(y_true, y_pred, average='weighted')
+
     print(f'Test accuracy: {test_accuracy * 100:.2f}%')
     print(f'Test loss: {test_loss * 100:.2f}%')
+    print(f'Test precision: {test_precision:.2f}')
+    print(f'Test recall: {test_recall:.2f}')
+    print(f'Test F1-score: {f1score:.2f}')
 
 
 if __name__ == "__main__":

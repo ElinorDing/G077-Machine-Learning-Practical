@@ -11,7 +11,7 @@ from transformers import TrainingArguments, Trainer
 from torch.utils.data import DataLoader
 import torch
 import argparse
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score,f1_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from torchvision.transforms import (CenterCrop,
                                     Compose, 
@@ -198,7 +198,7 @@ def main():
         per_device_train_batch_size=10,
         per_device_eval_batch_size=4,
         # training epoch, could be changed later 
-        num_train_epochs=1,
+        num_train_epochs=10,
         weight_decay=0.01,
         load_best_model_at_end=True,
         metric_for_best_model=metric_name,
@@ -225,37 +225,22 @@ def main():
     # %tensorboard --logdir logs/
                                   
 #   training                               
-    trainer.train()
-    print('1111')             
+    trainer.train()          
     outputs = trainer.predict(test_ds)
-    print('ZHEXHE: ',outputs.metrics)
     y_true = outputs.label_ids
     y_pred = outputs.predictions.argmax(1)
-    print('2222')
     labels = train_ds.features['label'].names
     cm = confusion_matrix(y_true, y_pred)
+    f1_ = f1_score(y_true,y_pred)
+    print('f1 score', f1_)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
     disp.plot(xticks_rotation=45)
                                   
 #  save model 
     trainer.save_model(args.output_dir)
-                                  
-#     for epoch in trange(args.num_train_epochs, desc="train_epochs"):
-#         trainer.train()
-#         outputs = trainer.predict(test_ds)
-#         print(outputs.metrics)
-
-#         y_true = outputs.label_ids
-#         y_pred = outputs.predictions.argmax(1)
-
-#         labels = train_ds.features['label'].names
-#         cm = confusion_matrix(y_true, y_pred)
-#         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-#         disp.plot(xticks_rotation=45)
-
-#         trainer.save_model(args.output_dir)
 
 
 if __name__ == "__main__":
     main()
+
 
