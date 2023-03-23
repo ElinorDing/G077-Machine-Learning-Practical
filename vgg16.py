@@ -114,3 +114,6 @@ def main():
     # Use the model for prediction
     # predict_image = some_image # Replace with your own image
     # predicted_class = model.predict(predict_image)
+
+if __name__ == "__main__":
+    main()
