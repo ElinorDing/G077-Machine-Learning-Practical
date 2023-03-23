@@ -2,7 +2,7 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision.datasets as datasets
+from datasets import load_dataset
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
@@ -117,8 +117,8 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    train_dataset = args.dataset_train
-    test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
+    train_dataset = load_dataset("imagefolder", data_dir= args.dataset_train)
+    test_dataset = load_dataset("imagefolder", data_dir= args.dataset_test)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 

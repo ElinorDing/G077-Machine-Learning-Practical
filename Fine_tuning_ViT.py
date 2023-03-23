@@ -209,7 +209,9 @@ def main():
     def compute_metrics(eval_pred):
         predictions, labels = eval_pred
         predictions = np.argmax(predictions, axis=1)
-        return dict(accuracy=accuracy_score(predictions, labels))
+        accuracy = accuracy_score(predictions, labels)
+        f1 = f1_score(predictions, labels, average='weighted')
+        return dict(accuracy=accuracy, f1_score=f1)
 
     trainer = Trainer(
         model,
@@ -231,8 +233,6 @@ def main():
     y_pred = outputs.predictions.argmax(1)
     labels = train_ds.features['label'].names
     cm = confusion_matrix(y_true, y_pred)
-    f1_ = f1_score(y_true,y_pred)
-    print('f1 score', f1_)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
     disp.plot(xticks_rotation=45)
                                   

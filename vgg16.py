@@ -19,6 +19,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications.vgg16 import VGG16
+from sklearn.metrics import f1_score
 
 # Define the paths to your original data and the output directories for train, validation and test sets
 original_data_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data'
@@ -92,7 +93,7 @@ def main():
     model = Model(inputs=base_model.input, outputs=x)
 
     # Compile the model
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall()])
 
     # Train the model
     model.fit(train_generator,
@@ -100,8 +101,13 @@ def main():
             validation_data=validation_generator)
 
     # Evaluate the model on the training set
-    train_loss, train_acc = model.evaluate(train_generator)
+    train_loss, train_acc, test_precision, test_recall = model.evaluate(train_generator)
+    y_true = test_generator.classes
+    y_pred = model.predict(test_generator).argmax(axis=-1)
+    f1score = f1_score(y_true, y_pred, average='weighted')
+
     print('Training accuracy:', train_acc)
+    print('Training loss:', train_loss)
 
     # Evaluate the model on the validation set
     val_loss, val_acc = model.evaluate(validation_generator)
@@ -110,6 +116,9 @@ def main():
     # Evaluate the model on the test set
     test_loss, test_acc = model.evaluate(test_generator)
     print('Test accuracy:', test_acc)
+    print(f'Test precision: {test_precision:.2f}')
+    print(f'Test recall: {test_recall:.2f}')
+    print(f'Test F1-score: {f1score:.2f}')
 
     # Use the model for prediction
     # predict_image = some_image # Replace with your own image
