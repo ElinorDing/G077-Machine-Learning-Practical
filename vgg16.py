@@ -12,6 +12,7 @@ Original file is located at
 
 import os
 import shutil
+import argparse
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -24,67 +25,92 @@ original_data_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data'
 train_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/vgg/train/'
 val_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/validation/'
 test_dir = '~/G077-Machine-Leaning-Practical/Data/Clean_data/test/'
+def parse_args():
+    parser = argparse.ArgumentParser(description="Finetune a transformers model on a summarization task")
+    parser.add_argument(
+        "--train_dir",
+        type=str,
+        default=None,
+        help="The name of the training dataset to use (via the datasets library).",
+    )
+    parser.add_argument(
+        "--val_dir",
+        type=str,
+        default=None,
+        help="The name of the validation dataset to use (via the datasets library).",
+    )
+    parser.add_argument(
+        "--test_dir",
+        type=str,
+        default=None,
+        help="The name of the test dataset to use (via the datasets library).",
+    )
+    args = parser.parse_args()
 
-# Define the data generators
-train_datagen = ImageDataGenerator(rescale=1./255,
-                                   shear_range=0.2,
-                                   zoom_range=0.2,
-                                   horizontal_flip=True)
+    return args
 
-test_datagen = ImageDataGenerator(rescale=1./255)
+def main():
+    args = parse_args()
+    # Define the data generators
+    train_datagen = ImageDataGenerator(rescale=1./255,
+                                    shear_range=0.2,
+                                    zoom_range=0.2,
+                                    horizontal_flip=True)
+
+    test_datagen = ImageDataGenerator(rescale=1./255)
 
 
-test_generator = test_datagen.flow_from_directory(test_dir,
-                                                  target_size=(512, 512),
-                                                  batch_size=32,
-                                                  class_mode='categorical')
-
-train_generator = train_datagen.flow_from_directory(train_dir,
+    test_generator = test_datagen.flow_from_directory(args.test_dir,
                                                     target_size=(512, 512),
                                                     batch_size=32,
                                                     class_mode='categorical')
 
-validation_generator = test_datagen.flow_from_directory(val_dir,
+    train_generator = train_datagen.flow_from_directory(args.train_dir,
                                                         target_size=(512, 512),
                                                         batch_size=32,
                                                         class_mode='categorical')
 
-# Load the pre-trained VGG-16 model
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(512, 512, 3))
+    validation_generator = test_datagen.flow_from_directory(args.val_dir,
+                                                            target_size=(512, 512),
+                                                            batch_size=32,
+                                                            class_mode='categorical')
 
-# Freeze the convolutional layers
-for layer in base_model.layers:
-    layer.trainable = False
+    # Load the pre-trained VGG-16 model
+    base_model = VGG16(weights='imagenet', include_top=False, input_shape=(512, 512, 3))
 
-# Add new layers for classification
-x = Flatten()(base_model.output)
-x = Dense(256, activation='relu')(x)
-x = Dense(128, activation='relu')(x)
-x = Dense(4, activation='softmax')(x)
+    # Freeze the convolutional layers
+    for layer in base_model.layers:
+        layer.trainable = False
 
-# Define the model
-model = Model(inputs=base_model.input, outputs=x)
+    # Add new layers for classification
+    x = Flatten()(base_model.output)
+    x = Dense(256, activation='relu')(x)
+    x = Dense(128, activation='relu')(x)
+    x = Dense(4, activation='softmax')(x)
 
-# Compile the model
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    # Define the model
+    model = Model(inputs=base_model.input, outputs=x)
 
-# Train the model
-model.fit(train_generator,
-          epochs=10,
-          validation_data=validation_generator)
+    # Compile the model
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# Evaluate the model on the training set
-train_loss, train_acc = model.evaluate(train_generator)
-print('Training accuracy:', train_acc)
+    # Train the model
+    model.fit(train_generator,
+            epochs=10,
+            validation_data=validation_generator)
 
-# Evaluate the model on the validation set
-val_loss, val_acc = model.evaluate(validation_generator)
-print('Validation accuracy:', val_acc)
+    # Evaluate the model on the training set
+    train_loss, train_acc = model.evaluate(train_generator)
+    print('Training accuracy:', train_acc)
 
-# Evaluate the model on the test set
-test_loss, test_acc = model.evaluate(test_generator)
-print('Test accuracy:', test_acc)
+    # Evaluate the model on the validation set
+    val_loss, val_acc = model.evaluate(validation_generator)
+    print('Validation accuracy:', val_acc)
 
-# Use the model for prediction
-# predict_image = some_image # Replace with your own image
-# predicted_class = model.predict(predict_image)
+    # Evaluate the model on the test set
+    test_loss, test_acc = model.evaluate(test_generator)
+    print('Test accuracy:', test_acc)
+
+    # Use the model for prediction
+    # predict_image = some_image # Replace with your own image
+    # predicted_class = model.predict(predict_image)
