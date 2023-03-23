@@ -79,19 +79,19 @@ def main():
 
     train_acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
-    print(f'Train accuracy: {train_acc * 100:.2f}%')
-    print(f'Validation accuracy: {val_acc * 100:.2f}%')
+    print('Train accuracy: ', train_acc)
+    print('Validation accuracy: ', val_acc)
 
     test_loss, test_accuracy, test_precision, test_recall = model.evaluate(test_generator)
     y_true = test_generator.classes
     y_pred = model.predict(test_generator).argmax(axis=-1)
     f1score = f1_score(y_true, y_pred, average='weighted')
 
-    print(f'Test accuracy: {test_accuracy * 100:.2f}%')
-    print(f'Test loss: {test_loss * 100:.2f}%')
-    print(f'Test precision: {test_precision:.2f}')
-    print(f'Test recall: {test_recall:.2f}')
-    print(f'Test F1-score: {f1score:.2f}')
+    print('Test accuracy: ', test_accuracy)
+    print('Test loss: ', test_loss)
+    print('Test precision: ', test_precision)
+    print('Test recall: ', test_recall)
+    print('Test F1-score: ', f1score)
 
 
 if __name__ == "__main__":
