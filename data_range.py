@@ -61,4 +61,4 @@ if __name__ == '__main__':
 
     src_data_folder = r"/Users/vonnet/Master/mlp/G077-Machine-Learning-Practical/Data/Clean_data/train"
     tar_data_folder = r"/Users/vonnet/Master/mlp/G077-Machine-Learning-Practical/Data/split_data"
-    data_set_split(src_data_folder, tar_data_folder,train_scale=0.25)
+    data_set_split(src_data_folder, tar_data_folder,train_scale=0.50)
