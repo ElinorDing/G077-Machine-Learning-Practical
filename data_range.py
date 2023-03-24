@@ -40,7 +40,7 @@ def data_set_split(src_data_folder1, target_data_folder1, train_scale):
             if current_idx <= train_stop_flag:
                 old_path = os.path.join(current_class_data_path,src_img_path)
                 new_path = os.path.join(train_folder,src_img_path)
-                shutil.move(old_path, new_path)
+                shutil.copy(old_path, new_path)
                 train_num = train_num + 1
             else:
                 break
@@ -61,4 +61,4 @@ if __name__ == '__main__':
 
     src_data_folder = r"/Users/vonnet/Master/mlp/G077-Machine-Learning-Practical/Data/Clean_data/train"
     tar_data_folder = r"/Users/vonnet/Master/mlp/G077-Machine-Learning-Practical/Data/split_data"
-    data_set_split(src_data_folder, tar_data_folder,train_scale=0.50)
+    data_set_split(src_data_folder, tar_data_folder,train_scale=0.25)
