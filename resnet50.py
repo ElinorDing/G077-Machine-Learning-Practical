@@ -101,3 +101,4 @@ if __name__ == "__main__":
 
 
 # python3 resnet50.py --dataset_train ~/G077-Machine-Learning-Practical/Data/Clean_data/train/ --dataset_validation ~/G077-Machine-Learning-Practical/Data/Clean_data/validation/ --dataset_test ~/G077-Machine-Learning-Practical/Data/Clean_data/test/
+# python3 resnet50.py --dataset_train ~/G077-Machine-Learning-Practical/Data/split_data/train_0.75 --dataset_validation ~/G077-Machine-Learning-Practical/Data/Clean_data/validation/ --dataset_test ~/G077-Machine-Learning-Practical/Data/Clean_data/test/
