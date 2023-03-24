@@ -46,6 +46,8 @@ def parse_args():
         default=None,
         help="The name of the test dataset to use (via the datasets library).",
     )
+    parser.add_argument("--output_dir", type=str, default=None, help="Where to store the final model.")
+
     args = parser.parse_args()
 
     return args
@@ -116,9 +118,14 @@ def main():
     y_pred = model.predict(test_generator).argmax(axis=-1)
     f1score = f1_score(y_true, y_pred, average='weighted')
     print('Test accuracy:', test_acc)
-    print(f'Test precision: {test_precision:.2f}')
-    print(f'Test recall: {test_recall:.2f}')
-    print(f'Test F1-score: {f1score:.2f}')
+    print('Test precision: ', test_precision)
+    print('Test recall: ', test_recall)
+    print('Test F1-score: ',f1score)
+
+    if args.output_dir:
+        os.makedirs(args.output_dir, exist_ok=True)
+        model.save(os.path.join(args.output_dir, "vgg16_model.h5"))
+
 
     # Use the model for prediction
     # predict_image = some_image # Replace with your own image

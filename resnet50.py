@@ -93,6 +93,8 @@ def main():
     print('Test recall: ', test_recall)
     print('Test F1-score: ', f1score)
 
+    model.save(args.output_dir)
+
 
 if __name__ == "__main__":
     main()
