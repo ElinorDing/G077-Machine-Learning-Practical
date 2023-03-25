@@ -103,17 +103,17 @@ def main():
             validation_data=validation_generator)
 
     # Evaluate the model on the training set
-    train_loss, train_acc, test_precision, test_recall = model.evaluate(train_generator)
+    train_loss, train_acc, train_precision, train_recall = model.evaluate(train_generator)
 
     print('Training accuracy:', train_acc)
     print('Training loss:', train_loss)
 
     # Evaluate the model on the validation set
-    val_loss, val_acc = model.evaluate(validation_generator)
+    val_loss, val_acc, val_precision, val_recall = model.evaluate(validation_generator)
     print('Validation accuracy:', val_acc)
 
     # Evaluate the model on the test set
-    test_loss, test_acc = model.evaluate(test_generator)
+    test_loss, test_acc,test_precision, test_recall = model.evaluate(test_generator)
     y_true = test_generator.classes
     y_pred = model.predict(test_generator).argmax(axis=-1)
     f1score = f1_score(y_true, y_pred, average='weighted')
