@@ -1,10 +1,12 @@
 import argparse
 import tensorflow as tf
+import os
 
 # Set the TensorFlow backend to use the GPU if available
 physical_devices = tf.config.list_physical_devices('GPU')
 if len(physical_devices) > 0:
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    # tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
