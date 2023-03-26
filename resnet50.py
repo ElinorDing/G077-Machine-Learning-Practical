@@ -8,6 +8,12 @@ Original file is located at
 """
 import argparse
 import tensorflow as tf
+
+# Set the TensorFlow backend to use the GPU if available
+physical_devices = tf.config.list_physical_devices('GPU')
+if len(physical_devices) > 0:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
