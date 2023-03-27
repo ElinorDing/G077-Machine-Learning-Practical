@@ -237,10 +237,11 @@ def main():
     disp.plot(xticks_rotation=45)
                                   
 #  save model 
-    trainer.save_model(args.output_dir)
+    # trainer.save_model(args.output_dir)
 
 
 if __name__ == "__main__":
     main()
 
 
+# python3 Fine_tuning_ViT.py --dataset_name ~/G077-Machine-Learning-Practical/Data/Clean_data/ --output_dir ~/G077-Machine-Learning-Practical/output/

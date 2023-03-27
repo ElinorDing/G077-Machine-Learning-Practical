@@ -36,16 +36,10 @@ class ViT(nn.Module):
 def parse_args():
     parser = argparse.ArgumentParser(description="Finetune a transformers model on a summarization task")
     parser.add_argument(
-        "--dataset_train",
+        "--dataset_name",
         type=str,
         default=None,
         help="The name of the train dataset to use (via the datasets library).",
-    )
-    parser.add_argument(
-        "--dataset_test",
-        type=str,
-        default=None,
-        help="The name of the test dataset to use (via the datasets library).",
     )
     parser.add_argument(
         "--learning_rate",
@@ -117,8 +111,17 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    train_dataset = load_dataset("imagefolder", data_dir= args.dataset_train)
-    test_dataset = load_dataset("imagefolder", data_dir= args.dataset_test)
+    dataset = load_dataset("imagefolder", data_dir= args.dataset_name)
+    splits = dataset["train"].train_test_split(test_size=0.1)
+
+    test_ds = splits["test"]
+
+    splits_2 = splits["train"].train_test_split(test_size=0.1)
+    train_ds = splits_2["train"]
+    
+    train_dataset = 
+    # train_dataset = load_dataset("imagefolder", data_dir= args.dataset_train)
+    # test_dataset = load_dataset("imagefolder", data_dir= args.dataset_test)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
@@ -140,4 +143,4 @@ if __name__ == '__main__':
     main()
 
 
-# python3 training_imple.py --dataset_train ~/G077-Machine-Learning-Practical/Data/Clean_data/train/ --dataset_test ~/G077-Machine-Learning-Practical/Data/Clean_data/test/ --num_train_epochs 10 --learning_rate 1e-3
+# python3 training_imple.py --dataset_name ~/G077-Machine-Learning-Practical/Data/Clean_data --num_train_epochs 10 --learning_rate 1e-3
