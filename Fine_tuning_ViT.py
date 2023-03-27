@@ -196,7 +196,7 @@ def main():
         per_device_train_batch_size=10,
         per_device_eval_batch_size=4,
         # training epoch, could be changed later 
-        num_train_epochs=1,
+        num_train_epochs=10,
         weight_decay=0.01,
         load_best_model_at_end=True,
         metric_for_best_model=metric_name,
@@ -209,8 +209,6 @@ def main():
         predictions = np.argmax(predictions, axis=1)
         accuracy = accuracy_score(predictions, labels)
         print('accuracy: ', accuracy)
-        # scce = tf.keras.losses.SparseCategoricalCrossentropy()
-        # print('loss: ',scce(labels, predictions).numpy())
         f1 = f1_score(predictions, labels, average='weighted')
         print('f1 ', f1)
         return dict(accuracy=accuracy, f1_score=f1)
