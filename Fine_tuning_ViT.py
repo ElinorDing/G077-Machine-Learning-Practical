@@ -229,7 +229,6 @@ def main():
     trainer.train()  
     trainer.save_model()        
     outputs = trainer.predict(test_ds)
-    print('loss: ', outputs.loss)
     y_true = outputs.label_ids
     y_pred = outputs.predictions.argmax(1)
     labels = train_ds.features['label'].names

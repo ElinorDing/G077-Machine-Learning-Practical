@@ -7,7 +7,7 @@ import tensorflow as tf
 # Set the TensorFlow backend to use the GPU if available
 physical_devices = tf.config.list_physical_devices('GPU')
 if len(physical_devices) > 0:
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, Flatten
@@ -131,3 +131,4 @@ if __name__ == "__main__":
 
 
 # python3 vgg16.py --train_dir ~/G077-Machine-Learning-Practical/Data/split_data/train_0.75 --val_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/validation/ --test_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/test/ --output_dir ~/G077-Machine-Learning-Practical/output
+# python3 vgg16.py --train_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/train --val_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/validation/ --test_dir ~/G077-Machine-Learning-Practical/Data/Clean_data/test/ --output_dir ~/G077-Machine-Learning-Practical/output
