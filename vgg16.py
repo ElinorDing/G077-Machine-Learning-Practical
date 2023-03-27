@@ -93,7 +93,7 @@ def main():
 
     # Train the model
     model.fit(train_generator,
-            epochs=10,
+            epochs=1,
             validation_data=validation_generator)
 
     # Evaluate the model on the training set
