@@ -25,10 +25,22 @@ def multi_plot(rl, em, bleu,interval):
 
 
 
-# varing training size to evaluate PTB
-rl = []
-em = []
-bleu = []
+# varing training size to evaluate accuracy
+resnet = [90.248, 93.0348,92.039,93.432]
+vgg16 = []
+vit = []
+training_size = [25, 50, 75, 100]
+
+# varing training size to evaluate loss
+resnet = [27.0622,21.774,20.129,17.201]
+vgg16 = []
+vit = []
+training_size = [25, 50, 75, 100]
+
+# varing training size to evaluate f1
+resnet = [90.233,93.078,92.039,93.430]
+vgg16 = []
+vit = []
 training_size = [25, 50, 75, 100]
 
 multi_plot(rl,em,bleu,training_size)
