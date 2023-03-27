@@ -131,13 +131,6 @@ def main():
     label2id = {label:id for id,label in id2label.items()}
 
 
-#     if args.model_name_or_path:
-#         processor = ViTImageProcessor.from_pretrained(args.model_name_or_path)
-#     else:
-#         raise ValueError("Make sure the model name is provided")
-#         # logger.info("Training new model from scratch")
-#         # model = ViTImageProcessor.from_config(config)
-
     processor = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224-in21k")
 
     image_mean, image_std = processor.image_mean, processor.image_std
@@ -190,9 +183,12 @@ def main():
 
     metric_name = "accuracy"
 
+
     args = TrainingArguments(
-        f"test-brain_tumor_classification",
-        save_strategy="epoch",
+        output_dir=f"test-brain_tumor_classification",
+        # load_best_model_at_end=False,
+        save_strategy = "no",
+        # save_total_limit = 1,
         evaluation_strategy="epoch",
         learning_rate=2e-5,
         per_device_train_batch_size=10,
@@ -227,7 +223,8 @@ def main():
     # %tensorboard --logdir logs/
                                   
 #   training                               
-    trainer.train()          
+    trainer.train()  
+    trainer.save_model()        
     outputs = trainer.predict(test_ds)
     y_true = outputs.label_ids
     y_pred = outputs.predictions.argmax(1)
