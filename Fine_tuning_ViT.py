@@ -186,10 +186,12 @@ def main():
 
     args = TrainingArguments(
         output_dir=f"test-brain_tumor_classification",
-        # load_best_model_at_end=False,
-        save_strategy = "no",
-        # save_total_limit = 1,
+        # save_steps = 1,
+        load_best_model_at_end=True,
+        save_strategy = "epoch",
+        save_total_limit = 1,
         evaluation_strategy="epoch",
+        # eval_step=1,
         learning_rate=2e-5,
         per_device_train_batch_size=10,
         per_device_eval_batch_size=4,
