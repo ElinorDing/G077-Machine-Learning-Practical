@@ -112,6 +112,7 @@ def main():
     y_pred = model.predict(test_generator).argmax(axis=-1)
     f1score = f1_score(y_true, y_pred, average='weighted')
     print('Test accuracy:', test_acc)
+    print('Test Loss; ', test_loss)
     print('Test precision: ', test_precision)
     print('Test recall: ', test_recall)
     print('Test F1-score: ',f1score)
