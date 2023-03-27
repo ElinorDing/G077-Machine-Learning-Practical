@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from tqdm import trange
 from datasets import load_dataset
-import tensorflow as tf
 from transformers import ViTImageProcessor
 from transformers import ViTForImageClassification
 from transformers import TrainingArguments, Trainer
