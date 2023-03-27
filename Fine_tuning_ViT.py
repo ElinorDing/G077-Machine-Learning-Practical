@@ -187,7 +187,6 @@ def main():
     args = TrainingArguments(
         output_dir=f"test-brain_tumor_classification",
         # save_steps = 1,
-        load_best_model_at_end=True,
         save_strategy = "epoch",
         save_total_limit = 1,
         evaluation_strategy="epoch",
