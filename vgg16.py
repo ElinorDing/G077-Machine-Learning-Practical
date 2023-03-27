@@ -7,7 +7,7 @@ import tensorflow as tf
 # Set the TensorFlow backend to use the GPU if available
 physical_devices = tf.config.list_physical_devices('GPU')
 if len(physical_devices) > 0:
-    os.environ["CUDA_VISIBLE_DEVICES"]="0"
+    os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, Flatten
