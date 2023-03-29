@@ -111,17 +111,9 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
-    dataset = load_dataset("imagefolder", data_dir= args.dataset_name)
-    splits = dataset["train"].train_test_split(test_size=0.1)
 
-    test_ds = splits["test"]
-
-    splits_2 = splits["train"].train_test_split(test_size=0.1)
-    train_ds = splits_2["train"]
-    
-    train_dataset = 
-    # train_dataset = load_dataset("imagefolder", data_dir= args.dataset_train)
-    # test_dataset = load_dataset("imagefolder", data_dir= args.dataset_test)
+    train_dataset = load_dataset("imagefolder", data_dir=args.dataset_train, split="train")
+    test_dataset = load_dataset("imagefolder", data_dir=args.dataset_test, split="test")
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
