@@ -36,7 +36,13 @@ class ViT(nn.Module):
 def parse_args():
     parser = argparse.ArgumentParser(description="Finetune a transformers model on a summarization task")
     parser.add_argument(
-        "--dataset_name",
+        "--dataset_train",
+        type=str,
+        default=None,
+        help="The name of the train dataset to use (via the datasets library).",
+    )
+    parser.add_argument(
+        "--dataset_test",
         type=str,
         default=None,
         help="The name of the train dataset to use (via the datasets library).",
